@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 describe('My Second Test Suite', function () {
 
@@ -10,7 +10,7 @@ describe('My Second Test Suite', function () {
       //  cy.get('div.mouse-hover-content').invoke('show') // visiable mode we use this with 
         cy.contains('Top').click({ force: true })  // invisiable mode we try to click using { force: true }
         cy.url().should('include','top')
-
+        
 
     })
 
