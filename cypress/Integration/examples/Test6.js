@@ -12,7 +12,7 @@ describe('My Second Test Suite', function () {
         cy.url().should('include','top')
         
 
-    })
+    }) 
 
 
 })
