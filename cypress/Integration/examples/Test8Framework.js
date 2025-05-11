@@ -6,7 +6,7 @@ describe('End to end ecommerce test', () => {
         cy.get("#password").type("learning")
         cy.contains("Sign In").click()
         cy.contains("Shop Name").should('be.visible')
-        cy.get('app-card').should('have.length',4)
+        cy.get('app-card').should('have.length',4)  
 
     })
 })
