@@ -8,7 +8,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 });
 describe('ProductResponse', () => {
 
-
+//dsfsdf
     beforeEach(() => {
         cy.clearCookies();
         cy.clearLocalStorage();
