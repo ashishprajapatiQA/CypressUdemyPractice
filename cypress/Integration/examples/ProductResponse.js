@@ -8,13 +8,13 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 });
 describe('ProductResponse', () => {
 
-//dsfsdf
+
     beforeEach(() => {
         cy.clearCookies();
         cy.clearLocalStorage();
     });
-    for (let i = 1; i <= 10; i++) {
-        it('Product Tour responce gene code', () => {
+    for (let i = 1; i <= 1; i++) {
+        it('Product Tour All steps', () => {
 
             // Visit the URL
             cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
@@ -48,6 +48,56 @@ describe('ProductResponse', () => {
             cy.wait(5000); // short wait before next iteration
 
         });
+        it('Product Tour partial 3/1', () => {
+
+            // Visit the URL
+            cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
+
+            // Load iframe (change selector as per iframe on page)
+            cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
+
+            // Switch to iframe and click element
+            cy.iframe('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba')
+                .find('#modal-body-main > div.modal-body > div:nth-child(2) > div:nth-child(5) > button:nth-child(1)') // Replace with actual element inside iframe
+                .should('be.visible').click();
+                cy.wait(5000);
+            cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
+            cy.iframe('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba')
+                .find('#ul-product-tour-close-btn')
+                .should('be.visible').click(); // Replace with actual element inside iframe
+                cy.wait(5000);
+                cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
+                cy.iframe('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba')
+                    .find('#dismiss-button')
+                    .should('be.visible').click(); // Replace with actual element inside iframe
+                
+            cy.wait(5000); // short wait before next iteration
+
+        });
+        it('Product Tour All steps 3/2', () => {
+
+            // Visit the URL
+            cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
+
+            // Load iframe (change selector as per iframe on page)
+            cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
+
+            // Switch to iframe and click element
+            cy.iframe('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba')
+                .find('#modal-body-main > div.modal-body > div:nth-child(2) > div:nth-child(5) > button:nth-child(1)') // Replace with actual element inside iframe
+                .should('be.visible').click();
+                cy.wait(5000);
+            cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
+            cy.iframe('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba')
+                .find('#main-tooltip-body > div.gs-tooltip-modal-content > div.tooltip-body > div > div:nth-child(3) > button:nth-child(2)')
+                .should('be.visible').click(); // Replace with actual element inside iframe
+            
+            cy.wait(5000); // short wait before next iteration
+
+        });
+
+
+       // #ul-checklist-7ce498d5-5efb-48bd-924b-b9f27457161d
     }
 });
 
