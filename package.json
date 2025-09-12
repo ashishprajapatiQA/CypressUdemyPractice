@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@cypress/xpath": "^2.0.3",
-    "cypress-iframe": "^1.0.1"
+    "cypress-iframe": "^1.0.1",
+    "cypress-real-events": "^1.15.0"
   }
 }
