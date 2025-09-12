@@ -14,7 +14,7 @@ describe('ProductResponse', () => {
         cy.clearLocalStorage();
     });
     for (let i = 1; i <= 10; i++) {
-        it('Product Tour', () => {
+        it('Product Tour responce gene code', () => {
 
             // Visit the URL
             cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
