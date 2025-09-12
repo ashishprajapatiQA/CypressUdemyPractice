@@ -73,6 +73,39 @@ describe('ProductResponse', () => {
                 
             cy.wait(5000); // short wait before next iteration
 
+            //checklist
+
+            cy.window().then((win) => {
+                cy.stub(win, 'open').callsFake(() => {}); 
+              });
+
+            cy.frameLoaded('#ul-checklist-7ce498d5-5efb-48bd-924b-b9f27457161d'); // If there are multiple, use a specific selector
+
+            // Switch to iframe and click element
+            cy.iframe('#ul-checklist-7ce498d5-5efb-48bd-924b-b9f27457161d')
+                .find('#checklist_item_deda44ae-9b9d-4ed1-9a04-12486f8d6050') // Replace with actual element inside iframe
+                .should('be.visible').invoke('removeAttr', 'target').click();
+                cy.wait(5000);
+
+                cy.frameLoaded('#ul-checklist-7ce498d5-5efb-48bd-924b-b9f27457161d'); // If there are multiple, use a specific selector
+
+                // Switch to iframe and click element
+                cy.iframe('#ul-checklist-7ce498d5-5efb-48bd-924b-b9f27457161d')
+                    .find('#checklist_item_ff36bdb4-41c7-4d7c-b678-805c823d23f9') // Replace with actual element inside iframe
+                    .should('be.visible').invoke('removeAttr', 'target').click();
+                    cy.wait(5000);
+
+                    cy.frameLoaded('#ul-checklist-7ce498d5-5efb-48bd-924b-b9f27457161d'); // If there are multiple, use a specific selector
+
+                    // Switch to iframe and click element
+                    cy.iframe('#ul-checklist-7ce498d5-5efb-48bd-924b-b9f27457161d')
+                        .find('#checklist_item_900ab3fe-c245-4b2a-9823-20070ce4e428') // Replace with actual element inside iframe
+                        .should('be.visible').invoke('removeAttr', 'target').click();
+                        cy.wait(5000);
+
+                
+                
+
         });
         it('Product Tour All steps 3/2', () => {
 
