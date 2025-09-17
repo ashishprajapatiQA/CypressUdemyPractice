@@ -10,11 +10,23 @@ describe('ProductResponse', () => {
 
 
     beforeEach(() => {
+        // cy.clearCookies();
+        // cy.clearLocalStorage();
+        // cy.clearAllSessionStorage();
+        // cy.window().then((win) => {
+        //     win.sessionStorage.clear();
+        //     if (win.indexedDB) {
+        //         win.indexedDB.databases().then((dbs) => {
+        //             dbs.forEach((db) => win.indexedDB.deleteDatabase(db.name));
+        //         });
+        //     }
+        // });
         cy.clearCookies();
         cy.clearLocalStorage();
+        cy.window().then(win => win.sessionStorage.clear());
     });
 
-    for (let i = 1; i <= 1; i++) {
+    for (let i = 1; i <= 3; i++) {
 
         it('Anonymous User who complete everything', () => {
 
@@ -779,6 +791,8 @@ describe('ProductResponse', () => {
 
         });
 
+
+
         it('Anonymous User who Attend Survey - Partial ', () => {
 
             // Visit the URL
@@ -845,20 +859,6 @@ describe('ProductResponse', () => {
                 .should('be.visible').click();
 
             cy.wait(2000);
-
-        });
-
-        it('DemoX shareble link', () => {
-
-            // Visit the URL
-            cy.visit('https://app.uzera.com/demoX/JS0A9XT00U/5ff617ab-0699-448f-aa58-9b245e26047b/share').wait(5000);
-
-        });
-
-        it('Shareable Survey', () => {
-
-            // Visit the URL
-            cy.visit('https://feedback.uzera.com/feedback/JS0A9XT00U/0863baf8-d0c9-40b6-a0a7-9d888340c225').wait(5000);
 
         });
 
