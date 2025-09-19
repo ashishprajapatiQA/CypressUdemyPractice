@@ -9,29 +9,73 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('ProductResponse', () => {
 
 
-    beforeEach(() => {
-        // cy.clearCookies();
-        // cy.clearLocalStorage();
-        // cy.clearAllSessionStorage();
-        // cy.window().then((win) => {
-        //     win.sessionStorage.clear();
-        //     if (win.indexedDB) {
-        //         win.indexedDB.databases().then((dbs) => {
-        //             dbs.forEach((db) => win.indexedDB.deleteDatabase(db.name));
-        //         });
-        //     }
-        // });
-        cy.clearCookies();
-        cy.clearLocalStorage();
-        cy.window().then(win => win.sessionStorage.clear());
-    });
+    // beforeEach(() => {
+    //     // cy.clearCookies();
+    //     // cy.clearLocalStorage();
+    //     // cy.clearAllSessionStorage();
+    //     // cy.window().then((win) => {
+    //     //     win.sessionStorage.clear();
+    //     //     if (win.indexedDB) {
+    //     //         win.indexedDB.databases().then((dbs) => {
+    //     //             dbs.forEach((db) => win.indexedDB.deleteDatabase(db.name));
+    //     //         });
+    //     //     }
+    //     // });
+    //     cy.clearCookies();
+    //     cy.clearLocalStorage();
+    //     cy.window().then(win => win.sessionStorage.clear());
+    // });
 
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 1; i++) {
+
+        it('DemoX form and clicks hotspots', () => {
+            // Visit the URL
+            cy.visit('https://app.uzera.com/demoX/JS0A9XT00U/5ff617ab-0699-448f-aa58-9b245e26047b/share');
+            cy.wait(5000);
+
+            // Generate random name & email
+            const randomName = `User${Math.floor(Math.random() * 10000)}`;
+            const randomEmail = `user${Math.floor(Math.random() * 10000)}@example.com`;
+
+            // Fill name field
+            cy.get('#\\:r3\\:').type(randomName);
+            cy.wait(2000);
+
+            // Fill email field
+            cy.get('#\\:r5\\:').type(randomEmail);
+            cy.wait(2000);
+
+            // Click continue button
+            cy.get(
+                '#ul-demox-embed > div > div > div > div > div > div.MuiBox-root.css-1js65af > ' +
+                'div > div.MuiBox-root.css-15qx0d1 > div > div > div.MuiStack-root.css-gfhfdc > button'
+            ).click();
+            cy.wait(4000);
+
+            // Hotspot clicks
+            const hotspotSelectors = [
+                '#ul-demox-embed > div > div > div > div > div > div.MuiBox-root.css-1js65af > div.MuiBox-root.css-3al35z > div.DemoxScript_gs-tooltip-Wrapper__lxSIu.DemoxScript_animation-view__sKxhM.MuiBox-root.css-zbb78r > div > svg',
+                '#ul-demox-embed > div > div > div > div > div > div.MuiBox-root.css-1js65af > div > div.DemoxScript_gs-tooltip-Wrapper__lxSIu.DemoxScript_animation-view__sKxhM.MuiBox-root.css-1cieebd > div > svg',
+                '#ul-demox-embed > div > div > div > div > div > div.MuiBox-root.css-1js65af > div > div.DemoxScript_gs-tooltip-Wrapper__lxSIu.DemoxScript_animation-view__sKxhM.MuiBox-root.css-1hs1t6f > div > svg',
+                '#ul-demox-embed > div > div > div > div > div > div.MuiBox-root.css-1js65af > div > div.DemoxScript_gs-tooltip-Wrapper__lxSIu.DemoxScript_animation-view__sKxhM.MuiBox-root.css-zaksfz > div > svg'
+            ];
+
+            hotspotSelectors.forEach((selector) => {
+                cy.get(selector).click({ force: true });
+                cy.wait(4000);
+            });
+
+        });
 
         it('Anonymous User who complete everything', () => {
 
             // Visit the URL
-            cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
+            cy.visit('https://test-project-rouge-one.vercel.app/', {
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            }).wait(5000);
 
             // Load iframe (change selector as per iframe on page)
             cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
@@ -217,7 +261,12 @@ describe('ProductResponse', () => {
         it('Anonymous User who dismiss In between', () => {
 
             // Visit the URL
-            cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
+            cy.visit('https://test-project-rouge-one.vercel.app/', {
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            }).wait(5000);
 
             // Load iframe (change selector as per iframe on page)
             cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
@@ -365,7 +414,12 @@ describe('ProductResponse', () => {
         it('Identify User who complete everything', () => {
 
             // Visit the URL
-            cy.visit('https://test-project-rouge-one.vercel.app/').wait(6000);
+            cy.visit('https://test-project-rouge-one.vercel.app/', {
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            }).wait(6000);
 
             cy.window().then((win) => {
                 // Generate random values
@@ -570,7 +624,12 @@ describe('ProductResponse', () => {
         it('Identify User who dismiss In between', () => {
 
             // Visit the URL
-            cy.visit('https://test-project-rouge-one.vercel.app/').wait(6000);
+            cy.visit('https://test-project-rouge-one.vercel.app/', {
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            }).wait(6000);
 
             cy.window().then((win) => {
                 // Generate random values
@@ -736,7 +795,12 @@ describe('ProductResponse', () => {
         it('Anonymous User who Attend Product Tour - Partial ', () => {
 
             // Visit the URL
-            cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
+            cy.visit('https://test-project-rouge-one.vercel.app/', {
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            }).wait(5000);
 
             // Load iframe (change selector as per iframe on page)
             cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
@@ -758,7 +822,12 @@ describe('ProductResponse', () => {
         it('Anonymous User who Attend Checklist - Partial ', () => {
 
             // Visit the URL
-            cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
+            cy.visit('https://test-project-rouge-one.vercel.app/', {
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            }).wait(5000);
 
             // Load iframe (change selector as per iframe on page)
             cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
@@ -791,12 +860,15 @@ describe('ProductResponse', () => {
 
         });
 
-
-
         it('Anonymous User who Attend Survey - Partial ', () => {
 
             // Visit the URL
-            cy.visit('https://test-project-rouge-one.vercel.app/').wait(5000);
+            cy.visit('https://test-project-rouge-one.vercel.app/', {
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            }).wait(5000);
 
             // Load iframe (change selector as per iframe on page)
             cy.frameLoaded('#ul-product-tour-580fcd04-ff7f-4fed-b87f-c6af9ac6f8ba'); // If there are multiple, use a specific selector
@@ -861,6 +933,67 @@ describe('ProductResponse', () => {
             cy.wait(2000);
 
         });
+
+        it('Shareable Survey Automation Completes survey with random responses', () => {
+          // Visit the URL
+          cy.visit('https://feedback.uzera.com/feedback/JS0A9XT00U/0863baf8-d0c9-40b6-a0a7-9d888340c225');
+          cy.wait(5000);
+
+          // NPS score selectors
+          const npsIds = [
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(1)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(2)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(3)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(4)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(5)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(6)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(7)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(8)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(9)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(10)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(11)'
+          ];
+
+          const yesNoIds = [
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button.MuiButtonBase-root.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.MuiButton-colorPrimary.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.MuiButton-colorPrimary.gs-secondary-button.Survey_no-button__4CZPt.Survey_highlight-button__V4IcQ.undefined.css-1ujsas3',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > button:nth-child(1)'
+          ];
+
+          const csatIds = [
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(1) > svg',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(2) > svg',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(3) > svg',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(4) > svg',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(5) > svg'
+          ];
+
+          const cesIds = [
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(1)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(2)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(3)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(4)',
+            '#root > div > div > div > div.Survey_question-area__5f\\+qv > div > div.Survey_score-wrapper__ua7BA > div > div:nth-child(5)'
+          ];
+
+          function clickRandom(selectorList) {
+            const randomIndex = Math.floor(Math.random() * selectorList.length);
+            const randomSelector = selectorList[randomIndex];
+            cy.log(`🎯 Clicking: ${randomIndex} : ${randomSelector}`);
+            cy.get(randomSelector).should('be.visible').click({ force: true });
+            cy.wait(3000);
+          }
+
+          // Perform clicks
+          clickRandom(npsIds);
+          clickRandom(yesNoIds);
+          clickRandom(csatIds);
+          clickRandom(cesIds);
+
+        });
+
+      
+
+
 
     }
 });
