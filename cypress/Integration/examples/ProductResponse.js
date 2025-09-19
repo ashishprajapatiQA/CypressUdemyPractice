@@ -30,7 +30,12 @@ describe('ProductResponse', () => {
 
         it('DemoX form and clicks hotspots', () => {
             // Visit the URL
-            cy.visit('https://app.uzera.com/demoX/JS0A9XT00U/5ff617ab-0699-448f-aa58-9b245e26047b/share');
+            cy.visit('https://app.uzera.com/demoX/JS0A9XT00U/5ff617ab-0699-448f-aa58-9b245e26047b/share',{
+                onBeforeLoad(win) {
+                    win.localStorage.clear();
+                    win.sessionStorage.clear();
+                }
+            });
             cy.wait(5000);
 
             // Generate random name & email
