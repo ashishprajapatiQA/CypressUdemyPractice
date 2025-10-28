@@ -1,10 +1,25 @@
 describe('End to end ecommerce test', () => {
+
+    before(function () {
+        // runs once before all tests in this block
+        cy.fixture('example').then(function (data) {
+            this.data = data
+            cy.log(data)
+        })
+    })
+
     it("submit order", function () {
 
-        const productName = "Nokia Edge"
+        // const productName = "Nokia Edge"
+        const productName = this.data.productName
         cy.visit("https://rahulshettyacademy.com/loginpagePractise/")
-        cy.get("#username").type("rahulshettyacademy")
-        cy.get("#password").type("learning")
+
+        // cy.get("#username").type("rahulshettyacademy")
+        // cy.get("#password").type("learning")
+
+        cy.get("#username").type(this.data.username)
+        cy.get("#password").type(this.data.password)
+
         cy.contains("Sign In").click()
         cy.contains("Shop Name").should('be.visible')
         cy.get('app-card').should('have.length', 4)
@@ -25,11 +40,11 @@ describe('End to end ecommerce test', () => {
         ).then(function () {
             expect(sum).lessThan(200000)
         })
-        cy.contains('button','Checkout').click()
+        cy.contains('button', 'Checkout').click()
         cy.get('#country').type("India")
-        cy.get(".suggestions ul li a",{timeout:10000}).click()
+        cy.get(".suggestions ul li a", { timeout: 10000 }).click()
         cy.get('.checkbox').click()
         cy.get('.ng-untouched > .btn').click()
-        cy.get('.alert-success').should('contain','Success')
+        cy.get('.alert-success').should('contain', 'Success')
     })
 })
