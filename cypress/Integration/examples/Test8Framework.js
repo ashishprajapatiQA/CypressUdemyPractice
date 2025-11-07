@@ -12,17 +12,22 @@ describe('End to end ecommerce test', () => {
 
         // const productName = "Nokia Edge"
         const productName = this.data.productName
-        cy.visit("https://rahulshettyacademy.com/loginpagePractise/")
+
+       
+        //cy.visit("https://rahulshettyacademy.com/loginpagePractise/")
 
         // cy.get("#username").type("rahulshettyacademy")
         // cy.get("#password").type("learning")
 
-        cy.get("#username").type(this.data.username)
-        cy.get("#password").type(this.data.password)
+        // cy.get("#username").type(this.data.username)
+        // cy.get("#password").type(this.data.password)
+        // cy.contains("Sign In").click()
+        const homepage = new HomePage()
+        homepage.goTO("https://rahulshettyacademy.com/loginpagePractise/")
+        homepage.login(this.data.username,this.data.password)
 
-        cy.contains("Sign In").click()
-        cy.contains("Shop Name").should('be.visible')
-        cy.get('app-card').should('have.length', 4)
+        
+       
         cy.get('app-card').filter(`:contains("${productName}")`).then(
             $element => {
                 cy.wrap($element).should('have.length', 1)

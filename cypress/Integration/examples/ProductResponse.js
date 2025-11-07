@@ -26,7 +26,7 @@ describe('ProductResponse', () => {
     //     cy.window().then(win => win.sessionStorage.clear());
     // });
 
-    for (let i = 1; i <= 1; i++) {
+    for (let i = 1; i <= 10; i++) {
 
         // it('DemoX form and clicks hotspots', () => {
         //     // Visit the URL
