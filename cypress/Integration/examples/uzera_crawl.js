@@ -1,7 +1,22 @@
+// ============================================================
+// ORIGINAL CODE (commented out)
+// ============================================================
 
-
-// // cypress/e2e/uzera_crawl.cy.js
-
+// // Chaos configuration
+// const chaosConfig = {
+//   hoverCount: 100,
+//   hoverDelay: 50,
+//   rageClickCount: 6,
+//   rageClickDelay: 10,
+//   crawlCountMin: 1,
+//   crawlCountMax: 15,
+//   postActionDelay: 2000,
+//   navigationDelay: 3000,
+//   identifyDelay: 5000,
+//   apiClickDelay: 3000,
+//   rageClickWait: 6000,
+// };
+//
 // function generateRandomUser() {
 //   const chars = 'abcdefghijklmnopqrstuvwxyz';
 //   const length = Math.floor(Math.random() * 6) + 5;
@@ -10,20 +25,85 @@
 //     brand += chars.charAt(Math.floor(Math.random() * chars.length));
 //   }
 //   const name = brand.charAt(0).toUpperCase() + brand.slice(1);
-//   const email = `${brand}${Math.floor(Math.random() * 1000)}@${brand}.com`;
+//   const domain = `${brand}.com`;
+//   const email = `${brand}${Math.floor(Math.random() * 1000)}@${domain}`;
 //   return { name, email };
 // }
-
-// describe('Identify once then randomly click nav-link anchors', () => {
+//
+// function randomRapidHover() {
+//   cy.get('body').then(($body) => {
+//     const bodyWidth = $body.width();
+//     const bodyHeight = $body.height();
+//
+//     for (let i = 0; i < chaosConfig.hoverCount; i++) {
+//       const posX = Math.floor(Math.random() * bodyWidth);
+//       const posY = Math.floor(Math.random() * bodyHeight);
+//       cy.wrap($body).trigger('mousemove', { clientX: posX, clientY: posY, force: true });
+//       cy.wait(chaosConfig.hoverDelay);
+//     }
+//     cy.log('Performed rapid hover at random positions');
+//   });
+// }
+//
+// function performDeadClick() {
+//   cy.get('body').click('topLeft');
+//   cy.log('Performed dead click');
+// }
+//
+// function performRageClickOnGetUsers() {
+//   cy.get('body').then(($body) => {
+//     const $btn = $body.find('button:contains("GET Users")');
+//     if ($btn.length > 0) {
+//       cy.wrap($btn.first()).as('getUsersBtn');
+//       for (let i = 0; i < chaosConfig.rageClickCount; i++) {
+//         cy.get('@getUsersBtn').click({ force: true });
+//         cy.wait(chaosConfig.rageClickDelay);
+//       }
+//       cy.log('Performed rage click on "GET Users" button');
+//     } else {
+//       cy.log('No "GET Users" button found for rage click');
+//     }
+//   });
+// }
+//
+// function performRandomNavLinkCrawl() {
+//   cy.get('a.nav-link').then(($links) => {
+//     const total = $links.length;
+//     const clickCount = Math.min(
+//       Math.floor(Math.random() * (chaosConfig.crawlCountMax - chaosConfig.crawlCountMin + 1)) + chaosConfig.crawlCountMin,
+//       total
+//     );
+//     cy.log(`Crawling ${clickCount} nav links`);
+//     console.log('counts -', clickCount);
+//
+//     for (let i = 0; i < clickCount; i++) {
+//       cy.get('a.nav-link').then(($freshLinks) => {
+//         const randomIndex = Math.floor(Math.random() * $freshLinks.length);
+//         cy.wrap($freshLinks[randomIndex]).click({ force: true });
+//       });
+//
+//       randomRapidHover();
+//       cy.wait(chaosConfig.postActionDelay);
+//
+//       performDeadClick();
+//       cy.wait(chaosConfig.postActionDelay);
+//
+//       // wait for navigation before next re-query
+//       cy.wait(chaosConfig.navigationDelay);
+//     }
+//   });
+// }
+//
+// describe('Chaos navigation with user identify and API rage click crawl', () => {
 //   const testUrl = 'https://qa-replay.netlify.app/';
-//   const repeatCount = 100; // open the same URL multiple times
-
+//   const repeatCount = 10;
+//
 //   for (let run = 1; run <= repeatCount; run++) {
-//     it(`Random nav-link click run #${run}`, () => {
+//     it(`Execution run #${run}`, () => {
 //       cy.visit(testUrl);
-//       cy.wait(5000);
-
-//       // Identify once
+//       cy.wait(2000);
+//
+//       // Identify user once
 //       cy.window().then((win) => {
 //         const randomId = `user_${Math.floor(Math.random() * 100000)}`;
 //         const { name, email } = generateRandomUser();
@@ -32,151 +112,78 @@
 //           win.console.log('uzera.identify executed', { id: randomId, name, email });
 //         }
 //       });
-//       cy.wait(1000);
-
-//       // Decide how many nav-links to click (5–6 or all)
-//       cy.get('a.nav-link').then(($links) => {
-//         const total = $links.length;
-//         const clickCount =
-//           Math.random() < 0.5 ? Math.floor(Math.random() * 2) + 5 : total;
-
-//         // Crawl step by step
-//         for (let i = 0; i < clickCount; i++) {
-//           cy.get('a.nav-link').then(($freshLinks) => {
-//             const randomIndex = Math.floor(Math.random() * $freshLinks.length);
-//             // break the chain: click, then stop
-//             cy.wrap($freshLinks[randomIndex]).click({ force: true });
-//           });
-
-//           // wait for navigation before next re-query
-//           cy.wait(6000);
+//
+//       cy.wait(chaosConfig.identifyDelay);
+//
+//       // Click nav-link with text "API" or href containing "api"
+//       cy.get('body').then(($body) => {
+//         const $links = $body.find('a.nav-link');
+//         const targetLink = [...$links].find(
+//           (el) =>
+//             el.innerText.toLowerCase().includes('api') ||
+//             (el.getAttribute('href') || '').toLowerCase().includes('api')
+//         );
+//         if (targetLink) {
+//           cy.wrap(targetLink).click({ force: true });
+//           cy.log('Clicked nav-link with "API"');
+//         } else {
+//           cy.log('No nav-link with "API" found');
 //         }
 //       });
-
-//       cy.then(() => {
-//         cy.log(`Run #${run} completed`);
-//       });
+//
+//       cy.wait(chaosConfig.apiClickDelay);
+//
+//       // Perform chaos actions
+//       randomRapidHover();
+//       cy.wait(chaosConfig.postActionDelay);
+//
+//       performDeadClick();
+//       cy.wait(chaosConfig.postActionDelay);
+//
+//       performRageClickOnGetUsers();
+//       cy.wait(chaosConfig.rageClickWait);
+//
+//       // Crawl other nav-links randomly multiple times
+//       performRandomNavLinkCrawl();
+//       cy.wait(chaosConfig.postActionDelay);
+//
+//       cy.log(`Run #${run} completed`);
 //     });
 //   }
 // });
 
+// ============================================================
+// NEW CODE — session cap + random inactivity period
+// ============================================================
 
-//===================================================
-
-// function generateRandomUser() {
-//   const chars = 'abcdefghijklmnopqrstuvwxyz';
-//   const length = Math.floor(Math.random() * 6) + 5;
-//   let brand = '';
-//   for (let i = 0; i < length; i++) {
-//     brand += chars.charAt(Math.floor(Math.random() * chars.length));
-//   }
-//   const name = brand.charAt(0).toUpperCase() + brand.slice(1);
-//   const email = `${brand}${Math.floor(Math.random() * 1000)}@${brand}.com`;
-//   return { name, email };
-// }
-
-// function randomExtraAction() {
-//   const actionType = Math.floor(Math.random() * 3); // 0=hover, 1=rage, 2=dead
-
-//   if (actionType === 0) {
-//     // Random hover
-//     cy.get('body *:visible').then(($els) => {
-//       if ($els.length > 0) {
-//         const randomIndex = Math.floor(Math.random() * $els.length);
-//         cy.wrap($els[randomIndex]).trigger('mouseover');
-//         cy.log('Performed random hover');
-//       }
-//     });
-//   } else if (actionType === 1) {
-//     // Rage click on content (not nav-links)
-//     cy.get('body *:visible:not(a.nav-link)').then(($els) => {
-//       if ($els.length > 0) {
-//         const randomIndex = Math.floor(Math.random() * $els.length);
-//         const target = $els[randomIndex];
-//         // issue separate Cypress commands, not chained
-//         cy.wrap(target).click({ force: true });
-//         cy.wait(200);
-//         cy.wrap(target).click({ force: true });
-//         cy.wait(200);
-//         cy.wrap(target).click({ force: true });
-//         cy.wait(200);
-//         cy.wrap(target).click({ force: true });
-//         cy.wait(200);
-//         cy.wrap(target).click({ force: true });
-//         cy.wait(200);
-//         cy.wrap(target).click({ force: true });
-//         console.log('Performed rage click on content');
-//       }
-//     });
-//   } else {
-//     // Dead click (background)
-//     cy.get('body').click('topLeft');
-//     console.log('Performed dead click');
-//   }
-// }
-
-// describe('Identify once then randomly click nav-link anchors with extra actions', () => {
-//   const testUrl = 'https://qa-replay.netlify.app/';
-//   const repeatCount = 2;
-
-//   for (let run = 1; run <= repeatCount; run++) {
-//     it(`Random nav-link click run #${run}`, () => {
-//       cy.visit(testUrl);
-//       cy.wait(5000);
-//       // Identify once
-//       cy.window().then((win) => {
-//         const randomId = `user_${Math.floor(Math.random() * 100000)}`;
-//         const { name, email } = generateRandomUser();
-//         if (win.uzera && typeof win.uzera.identify === 'function') {
-//           win.uzera.identify(randomId, { name, email });
-//           win.console.log('uzera.identify executed', { id: randomId, name, email });
-//         }
-//       });
-
-//       // Decide how many nav-links to click
-//       cy.get('a.nav-link').then(($links) => {
-//         const total = $links.length;
-//         const clickCount =
-//           Math.random() < 0.5 ? Math.floor(Math.random() * 2) + 5 : total;
-
-//         // Recursive click function with extra actions
-//         function clickRandomLink(count) {
-//           if (count <= 0) return;
-
-//           cy.get('a.nav-link').then(($freshLinks) => {
-//             const randomIndex = Math.floor(Math.random() * $freshLinks.length);
-//             cy.wrap($freshLinks[randomIndex]).click({ force: true });
-//           });
-
-//           // break chain: wait, then perform extra action
-//           cy.wait(3000);
-//           randomExtraAction();
-//           cy.wait(5000);
-
-//           // re-run with fresh query
-//           clickRandomLink(count - 1);
-//         }
-
-//         clickRandomLink(clickCount);
-//       });
-
-//       cy.then(() => {
-//         cy.log(`Run #${run} completed`);
-//       });
-//     });
-//   }
-// });
-
-
-// Chaos configuration
 const chaosConfig = {
-  hoverCount: 10,
-  hoverDelay: 100,
+  hoverCount: 100,
+  hoverDelay: 50,
   rageClickCount: 6,
   rageClickDelay: 10,
-  crawlCountMin: 2,
-  crawlCountMax: 4,
+  crawlCountMin: 7,
+  crawlCountMax: 15,
+  postActionDelay: 2000,
+  navigationDelay: 3000,
+  identifyDelay: 5000,
+  apiClickDelay: 3000,
+  rageClickWait: 6000,
+  maxSessionDuration: 2,      // ← minutes — change to adjust session cap
+  inactivityDuration: 30000,  // ← ms — change to adjust idle pause (30s)
 };
+
+function isTimeUp(startTime) {
+  const sessionLimitMs = chaosConfig.maxSessionDuration * 60 * 1000;
+  return Date.now() - startTime >= sessionLimitMs;
+}
+
+function maybeInactive(gapIndex, inactivityAt) {
+  if (gapIndex === inactivityAt) {
+    cy.log(`💤 Inactivity period — idle for ${chaosConfig.inactivityDuration / 1000}s`);
+    cy.wait(chaosConfig.inactivityDuration);
+    cy.log('▶ Resuming activity');
+  }
+}
 
 function generateRandomUser() {
   const chars = 'abcdefghijklmnopqrstuvwxyz';
@@ -195,11 +202,10 @@ function randomRapidHover() {
   cy.get('body').then(($body) => {
     const bodyWidth = $body.width();
     const bodyHeight = $body.height();
-
     for (let i = 0; i < chaosConfig.hoverCount; i++) {
       const posX = Math.floor(Math.random() * bodyWidth);
       const posY = Math.floor(Math.random() * bodyHeight);
-      cy.wrap($body).trigger('mousemove', { clientX: posX, clientY: posY });
+      cy.wrap($body).trigger('mousemove', { clientX: posX, clientY: posY, force: true });
       cy.wait(chaosConfig.hoverDelay);
     }
     cy.log('Performed rapid hover at random positions');
@@ -212,9 +218,10 @@ function performDeadClick() {
 }
 
 function performRageClickOnGetUsers() {
-  cy.contains('button', 'GET Users', { timeout: 0 }).then(($btn) => {
+  cy.get('body').then(($body) => {
+    const $btn = $body.find('button:contains("GET Users")');
     if ($btn.length > 0) {
-      cy.wrap($btn).as('getUsersBtn');
+      cy.wrap($btn.first()).as('getUsersBtn');
       for (let i = 0; i < chaosConfig.rageClickCount; i++) {
         cy.get('@getUsersBtn').click({ force: true });
         cy.wait(chaosConfig.rageClickDelay);
@@ -226,32 +233,37 @@ function performRageClickOnGetUsers() {
   });
 }
 
-function performRandomNavLinkCrawl() {
+function performRandomNavLinkCrawl(startTime) {
+  cy.get('a.nav-link').then(($links) => {
+    const total = $links.length;
+    const clickCount = Math.min(
+      Math.floor(Math.random() * (chaosConfig.crawlCountMax - chaosConfig.crawlCountMin + 1)) + chaosConfig.crawlCountMin,
+      total
+    );
+    cy.log(`Crawling up to ${clickCount} nav links`);
 
-      cy.get('a.nav-link').then(($links) => {
-        const total = $links.length;
-        const clickCount =
-          Math.random() < 0.5 ? Math.floor(Math.random() * 2) + 5 : total;
-          console.log('clickCount',clickCount);
-        // Crawl step by step
-        for (let i = 0; i < clickCount; i++) {
-          cy.get('a.nav-link').then(($freshLinks) => {
-            const randomIndex = Math.floor(Math.random() * $freshLinks.length);
-            // break the chain: click, then stop
-            cy.wrap($freshLinks[randomIndex]).click({ force: true });
-          });
-
-          randomRapidHover();
-          cy.wait(2000);
-    
-          performDeadClick();
-          cy.wait(2000);
-
-          // wait for navigation before next re-query
-          cy.wait(6000);
+    for (let i = 0; i < clickCount; i++) {
+      cy.then(() => {
+        if (isTimeUp(startTime)) {
+          cy.log(`⏱ Session time limit reached — stopping crawl at iteration ${i}`);
+          return;
         }
+        cy.get('a.nav-link').then(($freshLinks) => {
+          const randomIndex = Math.floor(Math.random() * $freshLinks.length);
+          cy.wrap($freshLinks[randomIndex]).click({ force: true });
+        });
+        randomRapidHover();
+        cy.wait(chaosConfig.postActionDelay);
+        performDeadClick();
+        cy.wait(chaosConfig.postActionDelay);
+        cy.wait(chaosConfig.navigationDelay);
       });
+    }
+  });
 }
+
+// Ignore all uncaught exceptions thrown by the app (not test code)
+Cypress.on('uncaught:exception', () => false);
 
 describe('Chaos navigation with user identify and API rage click crawl', () => {
   const testUrl = 'https://qa-replay.netlify.app/';
@@ -259,10 +271,17 @@ describe('Chaos navigation with user identify and API rage click crawl', () => {
 
   for (let run = 1; run <= repeatCount; run++) {
     it(`Execution run #${run}`, () => {
+      let startTime;
+      // 4 gaps between 5 phases — idle fires at one random gap each run
+      // gap 0 = after API nav, 1 = after hover, 2 = after dead click, 3 = after rage click
+      const inactivityAt = Math.floor(Math.random() * 4);
+      cy.log(`🎲 Inactivity will fire at gap ${inactivityAt}`);
+
       cy.visit(testUrl);
       cy.wait(2000);
+      cy.then(() => { startTime = Date.now(); });
 
-      // Identify user once
+      // Identify user
       cy.window().then((win) => {
         const randomId = `user_${Math.floor(Math.random() * 100000)}`;
         const { name, email } = generateRandomUser();
@@ -271,51 +290,75 @@ describe('Chaos navigation with user identify and API rage click crawl', () => {
           win.console.log('uzera.identify executed', { id: randomId, name, email });
         }
       });
+      cy.wait(chaosConfig.identifyDelay);
 
-      cy.wait(5000);
-
-      // Click nav-link with text "API" or href containing "api"
-      cy.get('a.nav-link', { timeout: 0 }).then(($links) => {
+      // Phase 1: Navigate to API page
+      cy.get('body').then(($body) => {
+        const $links = $body.find('a.nav-link');
         const targetLink = [...$links].find(
           (el) =>
             el.innerText.toLowerCase().includes('api') ||
             (el.getAttribute('href') || '').toLowerCase().includes('api')
         );
         if (targetLink) {
-          cy.wrap(targetLink).as('apiLink');
-          cy.get('@apiLink').click({ force: true });
+          cy.wrap(targetLink).click({ force: true });
           cy.log('Clicked nav-link with "API"');
         } else {
           cy.log('No nav-link with "API" found');
         }
       });
+      cy.wait(chaosConfig.apiClickDelay);
 
-      cy.wait(3000);
+      // Click buttons on the API page — pick one total count (5, 10, or 15) and click random buttons that many times
+      cy.get('body').then(($body) => {
+        const $buttons = $body.find('button');
+        const clickOptions = [5, 10, 15];
+        const totalClicks = clickOptions[Math.floor(Math.random() * clickOptions.length)];
+        if ($buttons.length > 0) {
+          cy.log(`Found ${$buttons.length} button(s) on API page — will click ${totalClicks} times total`);
+          for (let c = 0; c < totalClicks; c++) {
+            const randomIndex = Math.floor(Math.random() * $buttons.length);
+            const btn = $buttons[randomIndex];
+            cy.wrap(btn).click({ force: true });
+            cy.wait(500);
+            cy.log(`Click ${c + 1}/${totalClicks} — "${btn.innerText.trim()}"`);
+          }
+        } else {
+          cy.log('No buttons found on API page');
+        }
+      });
+      cy.wait(chaosConfig.postActionDelay);
 
-      // Perform chaos actions
+      // Gap 0 — between API nav and hover
+      cy.then(() => { maybeInactive(0, inactivityAt); });
+
+      // Phase 2: Rapid hover
       randomRapidHover();
-      cy.wait(2000);
+      cy.wait(chaosConfig.postActionDelay);
 
+      // Gap 1 — between hover and dead click
+      cy.then(() => { maybeInactive(1, inactivityAt); });
+
+      // Phase 3: Dead click
       performDeadClick();
-      cy.wait(2000);
+      cy.wait(chaosConfig.postActionDelay);
 
+      // Gap 2 — between dead click and rage click
+      cy.then(() => { maybeInactive(2, inactivityAt); });
+
+      // Phase 4: Rage click on GET Users
       performRageClickOnGetUsers();
-      cy.wait(6000);
+      cy.wait(chaosConfig.rageClickWait);
 
-      // Crawl other nav-links randomly multiple times
-      performRandomNavLinkCrawl();
-      cy.wait(2000);
+      // Gap 3 — between rage click and crawl
+      cy.then(() => { maybeInactive(3, inactivityAt); });
 
-      cy.log(`Run #${run} completed`);
+      // Phase 5: Crawl nav links (time-guarded)
+      // wrapped in cy.then so startTime is read at execution time, not queue-build time
+      cy.then(() => { performRandomNavLinkCrawl(startTime); });
+      cy.wait(chaosConfig.postActionDelay);
+
+      cy.log(`✅ Run #${run} completed`);
     });
   }
 });
-
-
-
-
-
-
-
-
-

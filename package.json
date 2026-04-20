@@ -7,6 +7,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@jprealini/cypress-mcp": "^1.0.25",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "cypress-xpath": "^2.0.1"
   },
   "devDependencies": {
