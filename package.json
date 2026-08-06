@@ -5,7 +5,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": " ",
   "dependencies": {
     "@jprealini/cypress-mcp": "^1.0.25",
     "@modelcontextprotocol/sdk": "^1.29.0",
