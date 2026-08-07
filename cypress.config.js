@@ -13,6 +13,6 @@ module.exports = defineConfig({
     viewportWidth: 2000,
     viewportHeight: 1080,
     testIsolation: true,
-    specPattern: 'cypress/integration/examples/*.js'
+    specPattern: 'cypress/Integration/examples/*.js'
   },
 });
