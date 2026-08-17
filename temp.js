@@ -1,6 +1,6 @@
 for (let i = 1; i <= 20; i++) {
   console.log(i);
-}
+}. 
  kjnjkaddkhajkdadhnkjasdnk
 
  if (age == "18") { console.log("Adult"); }
