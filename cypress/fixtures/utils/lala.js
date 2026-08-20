@@ -7,3 +7,9 @@ function lala(days){
     date.setDate(date.getDate() + days);
     return date;
 }
+
+function yaml(days){
+    let date = new Date();
+    date.setDate(date.getDate() + days);
+    return date;
+}
