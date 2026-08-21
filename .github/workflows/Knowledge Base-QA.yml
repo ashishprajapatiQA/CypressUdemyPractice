@@ -27,7 +27,7 @@
 
 
 
-name: Knowledge Base
+name: Knowledge Base QA
  
 on:
   push:
