@@ -9,7 +9,7 @@ jobs:
   wiki:
     runs-on: ubuntu-latest
     env:
-      UZERA_SCANNER_KEY: ${{ secrets.UZERA_SCANNER_KEY }}
+      UZERA_SCANNER_KEY: ${{ secrets.UZERA_SCANNER_KEY_PROD }}
     steps:
       - uses: actions/checkout@v4
 
